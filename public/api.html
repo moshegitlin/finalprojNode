@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>API Documentation</title>
+</head>
+
+<body>
+    <h1 class="text-center display-3 py-5">Toys API Documentation</h1>
+    <div class="container mt-4">
+        <h2 class="display-6">Toys Routes</h2>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>HTTP Method</th>
+                    <th>Route</th>
+                    <th>Description</th>
+                    <th>Parameters / Request Body</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GET</td>
+                    <td>/toys/count</td>
+                    <td>Returns the count of all toys in the database.</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/toys</td>
+                    <td>Retrieves a list of all toys. Supports query parameters for filtering.</td>
+                    <td>
+                        <ul>
+                            <li><b>Query Parameters</b> (optional):
+                                <ul>
+                                    <li><b>perPage</b>: Limits the number of results (e.g., perPage=5).</li>
+                                    <li><b>name</b>: Filters toys by name (e.g., name=toyName).</li>
+                                    <li><b>info</b>: Filters toys by info (e.g., info=toyInfo).</li>
+                                    <li><b>min</b> and <b>max</b>: Filters toys by price range (e.g., min=100&amp;max=200).</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/toys/:_id</td>
+                    <td>Retrieves a specific toy by its MongoDB ID.</td>
+                    <td>
+                        <ul>
+                            <li>_id (Path Parameter): The MongoDB ID of the toy to retrieve.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/toys/:category</td>
+                    <td>Retrieves toys belonging to a specific category.</td>
+                    <td>
+                        <ul>
+                            <li>category (Path Parameter): The category of toys to retrieve.</li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <td>POST</td>
+                <td>/toys</td>
+                <td>Adds a new toy. Requires authentication.(token required)</td>
+                <td>
+                    <ul>
+                        <li>Header: x-api-key (Authentication)</li>
+                        <li>Request Body: Toy data in JSON format.</li>
+                        <pre>{
+        "name": "Toy Name",
+        "info": "Toy Info",
+        "category": "Toy Category",
+        "img_url": "https://example.com/toy.jpg",
+        "price": "Toy Price"
+                        }</pre>
+                    </ul>
+                </td>
+                </tr>
+                <tr>
+                    <td>PUT</td>
+                    <td>/toys/:id</td>
+                    <td>Updates an existing toy by ID. Requires authentication. (token required)</td>
+                    <td>
+                        <ul>
+                            <li>id (Path Parameter): ID of the toy to update.</li>
+                            <li>Header: x-api-key (Authentication)</li>
+                            <li>Request Body: Updated toy data in JSON format.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>DELETE</td>
+                    <td>/toys/:id</td>
+                    <td>Deletes a toy by ID. Requires authentication.(token required)</td>
+                    <td>
+                        <ul>
+                            <li>id (Path Parameter): ID of the toy to delete.</li>
+                            <li>Header: x-api-key (Authentication)</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="container mt-5">
+        <h2 class="display-6">Users API</h2>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>HTTP Method</th>
+                    <th>Route</th>
+                    <th>Description</th>
+                    <th>Parameters / Request Body</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>POST</td>
+                    <td>/users</td>
+                    <td>Registers a new user. Encrypts the password before saving to the database.</td>
+                    <td>
+                        <ul>
+                            <li>Request Body (JSON):
+                                <pre>{
+        "name": "Your Name",
+        "email": "user@example.com",
+        "password": "your_password",
+    }</pre>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>/users/logIn</td>
+                    <td>Authenticates a user and returns a token.</td>
+                    <td>
+                        <ul>
+                            <li>Request Body (JSON):
+                                <pre>{
+        "email": "user@example.com",
+        "password": "your_password"
+    }</pre>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <footer class="mt-5 p-3">
+        <div class="container text-center">
+            <p>API Documentation</p>
+            <p>Developed using Express and MongoDB</p>
+        </div>
+    </footer>
+</body>
+
+</html>
