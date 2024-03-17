@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const http = require("http");
 const cors = require("cors");
-const {routesInit} = require("./routes/configRoutes");
+const { routesInit } = require("./routes/configRoutes");
 
 const app = express();
 require("./db/mongoConnect");
@@ -14,7 +14,10 @@ app.use(express.json());
 
 
 // דואג שתקיית פאבליק כל הקבצים בה יהיו חשופים לצד לקוח
-app.use(express.static(path.join(__dirname,"public")));
+app.use(express.static(path.join(__dirname, "public")));
+app.get('/api', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'api.html'));
+});
 
 // פונקציה שמגדירה את כל הראוטים הזמנים באפליקציית
 // צד שרת שלנו
