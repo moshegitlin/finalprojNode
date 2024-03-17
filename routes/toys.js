@@ -15,31 +15,37 @@ router.get('/count', async(req, res) => {
         }
     })
     // http://localhost:3001/toys
-    // http://localhost:3001/toys/_id
+    // http://localhost:3001/toys/single/:id
     // http://localhost:3001/toys/category
     // http://localhost:3001/toys?perPage=5
     // http://localhost:3001/toys?perPage=5&name=name
     // http://localhost:3001/toys?perPage=5&info=info
     // http://localhost:3001/toys?perPage=5&min=100&max=200
 
-router.get('/:param?', async(req, res, next) => {
-    try {
-        const param = req.params.param;
-        let category, id;
-        if (param) {
-            if (validator.isMongoId(param)) {
-                id = param;
-            } else {
-                category = param;
-            }
-        }
+router.get('/single/:id', async(req, res, next) => {
+    let id = req.params.id;
 
+    if (!validator.isMongoId(id)) {
+        next();
+        return;
+    }
+    try {
+        const data = await ToySchema.findOne({ _id: id });
+        if (!data) {
+            res.status(404).json({ msg: "Toy not found" });
+        }
+        res.status(200).json(data);
+    } catch (err) {
+        res.status(502).json(err);
+    }
+});
+
+router.get('/:category?', async(req, res, next) => {
+    try {
+        let category = req.params.category;
         const perPage = Math.min(req.query.perPage || 10, 10);
         const { name, info, min, max } = req.query;
         const query = {};
-        if (id) {
-            query._id = id;
-        }
         if (min) {
             query.price = { $gte: min };
         }
