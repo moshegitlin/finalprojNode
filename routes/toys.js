@@ -43,7 +43,7 @@ router.get('/single/:id', async(req, res, next) => {
 router.get('/:category?', async(req, res, next) => {
     try {
         let category = req.params.category;
-        const perPage = Math.min(req.query.perPage || 10, 10);
+        const perPage = req.query.perPage ? Math.min(req.query.perPage, 10) : 10;
         const { name, info, min, max } = req.query;
         const query = {};
         if (min) {
@@ -69,6 +69,7 @@ router.get('/:category?', async(req, res, next) => {
             next();
             return;
         }
+        console.log(data);
         res.json(data);
     } catch (err) {
         res.status(502).json(err);
