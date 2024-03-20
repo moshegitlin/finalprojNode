@@ -15,10 +15,6 @@ app.use(express.json());
 
 // דואג שתקיית פאבליק כל הקבצים בה יהיו חשופים לצד לקוח
 app.use(express.static(path.join(__dirname, "public")));
-app.get('/api', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'api.html'));
-});
-
 // פונקציה שמגדירה את כל הראוטים הזמנים באפליקציית
 // צד שרת שלנו
 routesInit(app);
