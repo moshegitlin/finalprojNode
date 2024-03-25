@@ -6,19 +6,15 @@ const { routesInit } = require("./routes/configRoutes");
 
 const app = express();
 require("./db/mongoConnect");
-
-// נותן אפשרות לכל דומיין לעשות בקשות לשרת שלנו
+// Allows each domain to make requests to our server
 app.use(cors());
-// מגדיר לשרת שהוא יכול לקבל מידע מסוג ג'ייסון בבאדי בבקשות שהם לא גט
+// Defines to the server that it can receive information of type Jason in Buddy in requests that are not get
 app.use(express.json());
 
-
-// דואג שתקיית פאבליק כל הקבצים בה יהיו חשופים לצד לקוח
+// Makes sure that the public folder and all the files in it are exposed on the client side
 app.use(express.static(path.join(__dirname, "public")));
-// פונקציה שמגדירה את כל הראוטים הזמנים באפליקציית
-// צד שרת שלנו
+// Initialize routes
 routesInit(app);
-// catch 404 and forward to error handler
 const server = http.createServer(app);
 const port = process.env.PORT || 3001;
 server.listen(port, () => console.log(`Listening on port ${port}`));
