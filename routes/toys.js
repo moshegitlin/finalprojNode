@@ -80,26 +80,33 @@ router.post('/', auth, async(req, res) => {
 router.put('/:id', auth, async(req, res) => {
     const { error } = validateToy(req.body);
     if (error) return res.status(400).json(error.details[0].message);
+
     try {
-        const data = await ToySchema.findOne({ _id: req.params.id });
-        if (!data.user_id.equals(req.tokenData._id)) return res.status(401).json({ msg: "You can't edit this toy" });
-        console.log(req.params.id, req.tokenData._id)
-        const updated = await ToySchema.updateOne({ _id: req.params.id }, req.body);
+        const updated = await ToySchema.updateOne({ _id: req.params.id, user_id: req.tokenData._id }, req.body);
+
+        if (updated.nModified == 0) {
+            return res.status(401).json({ msg: "You can't edit this toy" });
+        }
+
         res.json(updated);
     } catch (err) {
         res.status(502).json(err);
     }
-})
-router.delete('/:id', auth, async(req, res) => {
+});
 
+router.delete('/:id', auth, async(req, res) => {
     try {
-        const data = await ToySchema.findOne({ _id: req.params.id });
-        if (!data.user_id.equals(req.tokenData._id)) return res.status(401).json({ msg: "You can't edit this toy" });
-        const deleted = await ToySchema.deleteOne({ _id: req.params.id });
+        const deleted = await ToySchema.deleteOne({ _id: req.params.id, user_id: req.tokenData._id });
+
+        if (deleted.deletedCount == 0) {
+            return res.status(401).json({ msg: "You can't delete this toy" });
+        }
+
         res.json(deleted);
     } catch (err) {
         res.status(502).json(err);
     }
-})
+});
+
 
 module.exports = router;
